@@ -9,6 +9,7 @@ public class EfContext : DbContext
 {
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Models.Dbs.Certificate> Certificates { get; set; }
+    public virtual DbSet<ChamberOfCommerce> ChamberOfCommerces { get; set; }
 
     public EfContext(DbContextOptions<EfContext> options) : base(options)
     {

@@ -4,6 +4,8 @@ using Platform.Certificate.API.Models.Dtos.User;
 using Platform.Certificate.API.Models.Forms.User;
 using Platform.Certificate.API.Common.Extensions;
 using Platform.Certificate.API.Models.Dtos.Certificates;
+using Platform.Certificate.API.Models.Dtos.ChamberOfCommerces;
+using Platform.Certificate.API.Models.Forms.ChamberOfCommerces;
 
 namespace Platform.Certificate.API.MapperProfiles
 {
@@ -21,6 +23,11 @@ namespace Platform.Certificate.API.MapperProfiles
 
 
             CreateMap<Models.Dbs.Certificate, CertificateDto>();
+
+            CreateMap<ChamberOfCommerce, ChamberOfCommerceDto>();
+            CreateMap<CreateChamberOfCommerceFrom, ChamberOfCommerce>();
+            CreateMap<UpdateChamberOfCommerceForm, ChamberOfCommerce>()
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

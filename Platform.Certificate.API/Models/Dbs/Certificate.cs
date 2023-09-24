@@ -2,7 +2,7 @@
 
 namespace Platform.Certificate.API.Models.Dbs;
 
-public class Certificate : BaseEntity<int>
+public class Certificate : BaseEntity<Guid>
 {
     public string Number { get; set; }
     public string Path { get; set; }

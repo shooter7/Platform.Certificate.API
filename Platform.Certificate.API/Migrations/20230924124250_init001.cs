@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Platform.Certificate.API.DAL.Migrations
+namespace Platform.Certificate.API.Migrations
 {
     public partial class init001 : Migration
     {
@@ -13,8 +13,7 @@ namespace Platform.Certificate.API.DAL.Migrations
                 name: "Certificates",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -24,6 +23,24 @@ namespace Platform.Certificate.API.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Certificates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChamberOfCommerces",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChamberOfCommerces", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,13 +65,16 @@ namespace Platform.Certificate.API.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Fullname", "IsDeleted", "Password", "Role", "UpdatedAt", "Username" },
-                values: new object[] { 1, null, "Ahmed Jassim", false, "$2a$11$lj4WSMORMUXmh0zmxoP5U.0UXa2Q6N0ZweeTjfpODIwxB5KAxEsN6", "Admin", null, "admin" });
+                values: new object[] { 1, null, "Ahmed Jassim", false, "$2a$11$jAiuSucYnfns3xjEh6IwLuUJmHwQKG7XCuB56BLwIrOH8l9CVi1he", "Admin", null, "admin" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Certificates");
+
+            migrationBuilder.DropTable(
+                name: "ChamberOfCommerces");
 
             migrationBuilder.DropTable(
                 name: "Users");

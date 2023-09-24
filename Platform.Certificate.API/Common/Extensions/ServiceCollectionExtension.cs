@@ -105,6 +105,7 @@ namespace Platform.Certificate.API.Common.Extensions
             service.AddScoped<IUserService, UserService>();
             service.AddScoped<IFileService, FileService>();
             service.AddScoped<ICertificateService, CertificateService>();
+            service.AddScoped<IChamberOfCommerceService, ChamberOfCommerceService>();
         }
     }
 }

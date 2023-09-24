@@ -3,19 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Platform.Certificate.API.DAL.Data;
 
 #nullable disable
 
-namespace Platform.Certificate.API.DAL.Migrations
+namespace Platform.Certificate.API.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20220829143145_init001")]
-    partial class init001
+    partial class EfContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,11 +24,9 @@ namespace Platform.Certificate.API.DAL.Migrations
 
             modelBuilder.Entity("Platform.Certificate.API.Models.Dbs.Certificate", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -52,6 +48,40 @@ namespace Platform.Certificate.API.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Certificates");
+                });
+
+            modelBuilder.Entity("Platform.Certificate.API.Models.Dbs.ChamberOfCommerce", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChamberOfCommerces");
                 });
 
             modelBuilder.Entity("Platform.Certificate.API.Models.Dbs.User", b =>
@@ -97,7 +127,7 @@ namespace Platform.Certificate.API.DAL.Migrations
                             Id = 1,
                             Fullname = "Ahmed Jassim",
                             IsDeleted = false,
-                            Password = "$2a$11$lj4WSMORMUXmh0zmxoP5U.0UXa2Q6N0ZweeTjfpODIwxB5KAxEsN6",
+                            Password = "$2a$11$jAiuSucYnfns3xjEh6IwLuUJmHwQKG7XCuB56BLwIrOH8l9CVi1he",
                             Role = "Admin",
                             Username = "admin"
                         });
