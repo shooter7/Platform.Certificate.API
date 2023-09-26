@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Enums\" />
     <Folder Include="DAL\Migrations\" />
     <Folder Include="Models\Objects\" />
     <Folder Include="wwwroot\" />

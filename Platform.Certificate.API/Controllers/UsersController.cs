@@ -11,7 +11,7 @@ namespace Platform.Certificate.API.Controllers
     [ApiController]
     [Route(template: "[controller]")]
     [EnableCors(Constants.AllowOrigin)]
-    [Authorize]
+    // [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
