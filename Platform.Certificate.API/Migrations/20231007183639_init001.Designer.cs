@@ -12,8 +12,8 @@ using Platform.Certificate.API.DAL.Data;
 namespace Platform.Certificate.API.Migrations
 {
     [DbContext(typeof(EfContext))]
-    [Migration("20230926153648_init002")]
-    partial class init002
+    [Migration("20231007183639_init001")]
+    partial class init001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,9 +26,11 @@ namespace Platform.Certificate.API.Migrations
 
             modelBuilder.Entity("Platform.Certificate.API.Models.Dbs.Certificate", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -48,16 +50,23 @@ namespace Platform.Certificate.API.Migrations
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Number")
+                    b.Property<string>("Exporter")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Importer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PublicId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("State")
                         .HasColumnType("int");
@@ -147,7 +156,7 @@ namespace Platform.Certificate.API.Migrations
                             Id = 1,
                             Fullname = "Ahmed Jassim",
                             IsDeleted = false,
-                            Password = "$2a$11$hVHVl5q6ilYXjFhHWRbaY.9G7Dk2DrOqHy.K0t1s1FuD34aRjD7qi",
+                            Password = "$2a$11$OvLRD.IQadOwAbEFoSRgq.Mvv6QecPpyTHgpaTXqUADRqzpR/5HoG",
                             Role = "Admin",
                             Username = "admin"
                         });

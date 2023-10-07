@@ -13,9 +13,17 @@ namespace Platform.Certificate.API.Migrations
                 name: "Certificates",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PublicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Importer = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Exporter = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    State = table.Column<int>(type: "int", nullable: false),
                     Path = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -65,7 +73,7 @@ namespace Platform.Certificate.API.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Fullname", "IsDeleted", "Password", "Role", "UpdatedAt", "Username" },
-                values: new object[] { 1, null, "Ahmed Jassim", false, "$2a$11$jAiuSucYnfns3xjEh6IwLuUJmHwQKG7XCuB56BLwIrOH8l9CVi1he", "Admin", null, "admin" });
+                values: new object[] { 1, null, "Ahmed Jassim", false, "$2a$11$OvLRD.IQadOwAbEFoSRgq.Mvv6QecPpyTHgpaTXqUADRqzpR/5HoG", "Admin", null, "admin" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

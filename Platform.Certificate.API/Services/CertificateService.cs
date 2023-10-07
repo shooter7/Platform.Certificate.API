@@ -1,13 +1,12 @@
-﻿using System.Linq.Dynamic.Core;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Platform.Certificate.API.Common.Enums;
 using Platform.Certificate.API.Common.Extensions;
 using Platform.Certificate.API.Common.Helpers;
 using Platform.Certificate.API.DAL.Data;
 using Platform.Certificate.API.Models.Dtos.Certificates;
-using Platform.Certificate.API.Models.Dtos.User;
 using Platform.Certificate.API.Models.Forms.Certificates;
+using Platform.Certificate.API.Models.Objects;
 using Platform.Certificate.API.Services.Interfaces;
 
 namespace Platform.Certificate.API.Services
@@ -30,7 +29,7 @@ namespace Platform.Certificate.API.Services
             var serviceResponse = new ServiceResponse<CertificateDto>();
             try
             {
-                var certificate = await _efContext.Certificates.FirstOrDefaultAsync(x => x.Number.Equals(form.Number));
+                var certificate = await _efContext.Certificates.FirstOrDefaultAsync(x => x.Code.Equals(form.Code));
                 if (certificate is not null)
                 {
                     serviceResponse.Failed().WithError(0, "Duplicate number", null);
@@ -39,13 +38,29 @@ namespace Platform.Certificate.API.Services
                 {
                     certificate = new Models.Dbs.Certificate()
                     {
-                        Number = form.Number,
+                        PublicId = Guid.NewGuid(),
                         Path = await _fileService.UploadFile(form.File),
                         State = CertificateStateEnum.Pending,
                         Country = form.Country,
                         Address = form.Address,
                         Code = form.Code,
-                        ExpireDate = form.ExpireDate
+                        ExpireDate = form.ExpireDate,
+                        Importer = new Agent()
+                        {
+                            Fullname = form.Importer.Fullname,
+                            Address = form.Importer.Address,
+                            Phone = form.Importer.Phone,
+                            Email = form.Importer.Email,
+                            Country = form.Importer.Country
+                        },
+                        Exporter = new Agent()
+                        {
+                            Fullname = form.Exporter.Fullname,
+                            Address = form.Exporter.Address,
+                            Phone = form.Exporter.Phone,
+                            Email = form.Exporter.Email,
+                            Country = form.Exporter.Country
+                        }
                     };
 
                     await _efContext.Certificates.AddAsync(certificate);
@@ -64,7 +79,7 @@ namespace Platform.Certificate.API.Services
         public async Task<ServiceResponse<List<CertificateDto>>> Get(GetCertificateListForm form)
         {
             var query = _efContext.Certificates
-                .WhereIf(form.Number != null, x => x.Number.Contains(form.Number))
+                .WhereIf(form.Code != null, x => x.Code.Equals(form.Code))
                 .WhereIf(form.Country != null, x => x.Country.Contains(form.Country))
                 .WhereIf(form.State != null, x => x.State == form.State)
                 .Select(x => _mapper.Map<CertificateDto>(x));
@@ -73,10 +88,10 @@ namespace Platform.Certificate.API.Services
             return new ServiceResponse<List<CertificateDto>>().Successful().WithData(list).WithCount(count);
         }
 
-        public async Task<ServiceResponse<CertificateDto>> GetByNumber(string number)
+        public async Task<ServiceResponse<CertificateDto>> GetByCode(string code)
         {
             var serviceResponse = new ServiceResponse<CertificateDto>();
-            var certificate = await _efContext.Certificates.FirstOrDefaultAsync(x => x.Number.Equals(number));
+            var certificate = await _efContext.Certificates.FirstOrDefaultAsync(x => x.Code.Equals(code));
             if (certificate == null)
             {
                 return serviceResponse.Failed().WithError(1, "Not found", null);
@@ -86,7 +101,7 @@ namespace Platform.Certificate.API.Services
             return serviceResponse.Successful().WithData(userDto);
         }
 
-        public async Task<ServiceResponse<bool>> UpdateState(Guid id, CertificateStateEnum state)
+        public async Task<ServiceResponse<bool>> UpdateState(int id, CertificateStateEnum state)
         {
             var serviceResponse = new ServiceResponse<bool>();
             try
@@ -107,7 +122,7 @@ namespace Platform.Certificate.API.Services
             }
         }
 
-        public async Task<ServiceResponse<bool>> Delete(Guid id)
+        public async Task<ServiceResponse<bool>> Delete(int id)
         {
             var serviceResponse = new ServiceResponse<bool>();
             try
@@ -128,7 +143,7 @@ namespace Platform.Certificate.API.Services
             }
         }
 
-        public async Task<ServiceResponse<CertificateDto>> GetById(Guid id)
+        public async Task<ServiceResponse<CertificateDto>> GetById(int id)
         {
             var serviceResponse = new ServiceResponse<CertificateDto>();
             try

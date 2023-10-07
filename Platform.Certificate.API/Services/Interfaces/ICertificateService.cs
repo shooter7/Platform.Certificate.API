@@ -9,8 +9,8 @@ public interface ICertificateService
 {
     public Task<ServiceResponse<CertificateDto>> Add(CertificateForm form);
     public Task<ServiceResponse<List<CertificateDto>>> Get(GetCertificateListForm form);
-    public Task<ServiceResponse<CertificateDto>> GetByNumber(string number);
-    public Task<ServiceResponse<bool>> UpdateState(Guid id, CertificateStateEnum state);
-    public Task<ServiceResponse<bool>> Delete(Guid id);
-    public Task<ServiceResponse<CertificateDto>> GetById(Guid id);
+    public Task<ServiceResponse<CertificateDto>> GetByCode(string publicId);
+    public Task<ServiceResponse<bool>> UpdateState(int id, CertificateStateEnum state);
+    public Task<ServiceResponse<bool>> Delete(int id);
+    public Task<ServiceResponse<CertificateDto>> GetById(int id);
 }

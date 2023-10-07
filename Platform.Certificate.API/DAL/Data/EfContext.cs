@@ -1,7 +1,9 @@
 ﻿using Platform.Certificate.API.Models.Dbs;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Platform.Certificate.API.Common.Bases;
 using Platform.Certificate.API.Common.Extensions;
+using Platform.Certificate.API.Models.Objects;
 
 namespace Platform.Certificate.API.DAL.Data;
 
@@ -29,6 +31,25 @@ public class EfContext : DbContext
                 modelBuilder.SetSoftDeleteFilter(type.ClrType);
             }
         }
+
+        // modelBuilder.Entity<Models.Dbs.Certificate>().OwnsOne(
+        //     certificate => certificate.Exporter, ownedNavigationBuilder => { ownedNavigationBuilder.ToJson(); });
+        //
+        // modelBuilder.Entity<Models.Dbs.Certificate>().OwnsOne(
+        //     certificate => certificate.Importer, ownedNavigationBuilder => { ownedNavigationBuilder.ToJson(); });
+
+        modelBuilder.Entity<Models.Dbs.Certificate>().Property<Agent>(x => x.Exporter).HasConversion(
+            v => JsonConvert.SerializeObject(v,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+            v => JsonConvert.DeserializeObject<Agent>(v,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+
+        modelBuilder.Entity<Models.Dbs.Certificate>().Property<Agent>(x => x.Importer).HasConversion(
+            v => JsonConvert.SerializeObject(v,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+            v => JsonConvert.DeserializeObject<Agent>(v,
+                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+
 
         modelBuilder.Entity<User>().HasData(new List<User>()
         {
